@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Text.RegularExpressions;
 
 namespace TrabalhoMarcia.src
 {
@@ -15,9 +16,40 @@ namespace TrabalhoMarcia.src
 
         public static string GetZ()
         {
+
+            string x1 = "";
+            string x2 = "";
             Console.WriteLine("Digite a expressão de Z:");
             var Z = Console.ReadLine();
-            return Z;
+            Console.WriteLine($"Z = {Z}");
+            if (Z.Contains("x1") && Z.Contains("x2"))
+            {
+                if (Z.Substring(0, Z.IndexOf("x1")) == "")
+                {
+                    x1 = "1";
+                }
+                else 
+                {
+                    x1 = Z.Substring(0, Z.IndexOf("x1"));
+                }
+                if(Z.Substring(0, Z.IndexOf("x2")) == "") 
+                {
+                    x2 = "1";
+                }
+                else
+                {
+                    x2 = Z.Substring(0, Z.IndexOf("x2"));
+                }
+
+                string newZ = $"{x1}|{x2}";
+
+                return newZ;
+            }
+            else
+            {
+                Console.WriteLine("You must put x1 and x2");
+                return null;
+            }
         }
 
         public static void SetLimitantExpressions()
@@ -36,7 +68,6 @@ namespace TrabalhoMarcia.src
                     break;
                 }
             }
-
         }
     }
 }

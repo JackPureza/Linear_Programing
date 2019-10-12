@@ -8,9 +8,11 @@ namespace TrabalhoMarcia
     {
         static void Main(string[] args)
         {
-            Operations.GetTypeZ();
-            Operations.GetZ();
-            Operations.SetLimitantExpressions();
+            var typeZ = Operations.GetTypeZ(); //return z type in a string that contains a number 1 or 2
+            var Z =  Operations.GetZ(); //returns the number inside the Z expression
+
+            Operations.SetLimitantExpressions(); // Set all limitant expressions
+
         }
     }
 }
