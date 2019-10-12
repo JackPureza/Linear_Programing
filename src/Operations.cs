@@ -27,10 +27,14 @@ namespace TrabalhoMarcia.src
                 if (Z.Substring(0, Z.IndexOf("x1")) == "")
                 {
                     x1 = "1";
+                    var pos = Z.IndexOf("x1");
+                    Z = Z.Remove(0, pos + 3);
                 }
                 else 
                 {
                     x1 = Z.Substring(0, Z.IndexOf("x1"));
+                    var pos = Z.IndexOf("x1");
+                    Z = Z.Remove(0,pos+3);
                 }
                 if(Z.Substring(0, Z.IndexOf("x2")) == "") 
                 {
@@ -52,7 +56,7 @@ namespace TrabalhoMarcia.src
             }
         }
 
-        public static void SetLimitantExpressions()
+        public static string[] SetLimitantExpressions()
         {
             string[] expressao = new string[50];
 
@@ -68,6 +72,8 @@ namespace TrabalhoMarcia.src
                     break;
                 }
             }
+
+            return expressao;
         }
     }
 }
