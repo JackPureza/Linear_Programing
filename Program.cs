@@ -13,7 +13,11 @@ namespace TrabalhoMarcia
             Operations.SetNumberOfVariables();
             int[] Z = Operations.GetZ(typeZ); //returns a array with the values of the Z expression and the result after the check of the Z type
 
-            int[,] expressions = Operations.GetMatrixOfVaribles(); // return a matrix of all the variable's values 
+            int[,] variables = Operations.GetMatrixOfVaribles(); // return a matrix of all the variable's values 
+
+            int?[,] restrictions = Operations.GetMatrixOfRestrictions(); // returns a matrix of all restriciton's values
+            
+
         }
     }
 }

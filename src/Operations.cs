@@ -145,5 +145,31 @@ namespace TrabalhoMarcia.src
             }
             return matrix;
         }
+
+        public static int?[,] MergeMatrices(int[,] matrixVariables, int?[,] matrixRestrictions)
+        {
+            int?[,] newMatrix = new int?[matrixVariables.GetLength(0) + matrixRestrictions.GetLength(0), matrixRestrictions.GetLength(1)];
+
+            for (int i = 0; i < newMatrix.GetLength(0); i++)
+            {
+                for (int j = 0; j < newMatrix.GetLength(1); j++)
+                {
+                    try
+                    {
+                        newMatrix[i, j] = matrixVariables[i, j];
+                    }
+                    catch
+                    {
+                        newMatrix[i, j] = matrixRestrictions[i, j];
+                    }
+                }
+            }
+            return newMatrix;
+        }
+
+        public static int?[,] FinalMatrix() 
+        { 
+            
+        }
     }
 }
