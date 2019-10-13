@@ -95,11 +95,11 @@ namespace TrabalhoMarcia.src
 
         public static string TreatmentOFArtificialVariablesAndRespites(string expression, int i)
         {
-            if (expression.Contains("<=")) 
+            if (expression.Contains("<="))
             {
                 return expression.Replace("<=", $"+f{i}=");
             }
-            if (expression.Contains(">=")) 
+            if (expression.Contains(">="))
             {
                 return expression.Replace(">=", $"-f{i}+a{i}=");
             }
@@ -137,11 +137,11 @@ namespace TrabalhoMarcia.src
                 expression = expression.Remove(0, pos + 2);
             }
 
-            if (expression.Contains("+f")) 
+            if (expression.Contains("+f"))
             {
                 var pos = expression.IndexOf("=");
                 expression = expression.Remove(0, pos + 1);
-                return $"{x1}|{x2}|1|{expression}";            
+                return $"{x1}|{x2}|1|{expression}";
             }
             if (expression.Contains("-f"))
             {
@@ -156,6 +156,15 @@ namespace TrabalhoMarcia.src
                 return $"{x1}|{x2}|1|{expression}";
             }
             return "Error";
+        }
+
+        public static int[] PopulateAndOrganizeMatrix(string[] expressions) 
+        {
+            int[] lines = new int[expressions.Length]; 
+            for (int i = expressions.Length; i > 0 ; i--)
+            {
+               
+            }
         }
     }
 }

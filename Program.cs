@@ -22,7 +22,7 @@ namespace TrabalhoMarcia
                 lines[i] = Operations.GetNumbersInVariables(expressions[i]);
             }
 
-
+            Operations.PopulateAndOrganizeMatrix(expressions);
         }
     }
 }
