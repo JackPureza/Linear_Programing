@@ -25,8 +25,9 @@ namespace TrabalhoMarcia
             {
                 for (int j = 0; j < CompleteMatrix.GetLength(1); j++)
                 {
-                    Console.WriteLine($"{CompleteMatrix[i, j]}");
+                    Console.WriteLine($"{CompleteMatrix[i, j]}" + "\t");
                 }
+                Console.WriteLine("\n");
             }
         }
     }
