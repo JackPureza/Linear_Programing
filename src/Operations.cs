@@ -76,7 +76,7 @@ namespace TrabalhoMarcia.src
                 for (int j = 0; j < numberOfVariables; j++)
                 {
                     Console.WriteLine($"Digite o numero da {j}ª variavel da {i}ª expressão:");
-                    expression[j, i] = int.Parse(Console.ReadLine());
+                    expression[i, j] = int.Parse(Console.ReadLine());
                 }
             }
 
@@ -116,9 +116,9 @@ namespace TrabalhoMarcia.src
 
             int?[,] matrix = new int?[numberOfRestrictions, count];
 
-            for (int i = 0; i < count; i++)
+            for (int i = 0; i < numberOfRestrictions; i++)
             {
-                for (int j = 0; j < numberOfRestrictions; j++)
+                for (int j = 0; j < count; j++)
                 {
                     if (i == j)
                     {
@@ -132,8 +132,8 @@ namespace TrabalhoMarcia.src
                                 break;
                             case 3:
                                 matrix[i, j] = int.Parse(restricao[i].Substring(0, restricao[i].IndexOf("f")));
-                                restricao[i].Remove(0, restricao[i].IndexOf("f") + 1);
-                                matrix[i + 1, j] = int.Parse(restricao[i].Substring(0, restricao[i].IndexOf("a")));
+                                restricao[i] = restricao[i].Remove(0, restricao[i].IndexOf("+"));
+                                matrix[i, j + 1] = int.Parse(restricao[i].Substring(0, restricao[i].IndexOf("a")));
                                 break;
                         }
                     }
@@ -148,46 +148,50 @@ namespace TrabalhoMarcia.src
 
         public static int?[,] MergeMatrices(int[,] matrixVariables, int?[,] matrixRestrictions)
         {
-            int?[,] newMatrix = new int?[matrixVariables.GetLength(0) + matrixRestrictions.GetLength(0), matrixRestrictions.GetLength(1)];
+            int?[,] newMatrix = new int?[matrixRestrictions.GetLength(0), matrixVariables.GetLength(1) + matrixRestrictions.GetLength(1)];
 
-            for (int i = 0; i < newMatrix.GetLength(0); i++)
+            for (int i = 0; i < matrixVariables.GetLength(0); i++)
             {
-                for (int j = 0; j < newMatrix.GetLength(1); j++)
+                for (int j = 0; j < matrixVariables.GetLength(1); j++)
                 {
-                    try
-                    {
-                        newMatrix[i, j] = matrixVariables[i, j];
-                    }
-                    catch
-                    {
-                        newMatrix[i, j] = matrixRestrictions[i, j];
-                    }
+                    newMatrix[i, j] = matrixVariables[i, j];
+                }
+            }
+            for (int i = 0; i < matrixRestrictions.GetLength(0); i++)
+            {
+                for (int j = 0; j < matrixRestrictions.GetLength(1); j++)
+                {
+                    newMatrix[i, matrixVariables.GetLength(1) + j] = matrixRestrictions[i, j];
                 }
             }
             return newMatrix;
         }
 
-        public static int?[,] FinalMatrix(int?[] matrix, int[] z)
+        public static int?[,] FinalMatrix(int?[,] matrix, int[] z)
         {
             int?[,] newMatrix = new int?[matrix.GetLength(0) + 1, matrix.GetLength(1) + 1];
 
-            for (int i = 0; i < newMatrix.GetLength(0); i++)
+            int[] result = GetResult(newMatrix.GetLength(0) - 1);
+
+            for (int i = 0; i < matrix.GetLength(0); i++)
             {
-                if (!z[i].Equals(""))
+                for (int j = 0; j < matrix.GetLength(1); j++)
                 {
-                    newMatrix[newMatrix.GetLength(0), i] = z[i];
-                }
-                else
-                {
-                    newMatrix[newMatrix.GetLength(0), i] = 0;
+                    newMatrix[i, j] = matrix[i, j];
                 }
             }
-
-            int[] result = GetResult(newMatrix.GetLength(1));
-
-            for (int i = 0; i < newMatrix.GetLength(1); i++)
+            for (int i = 0; i < matrix.GetLength(0); i++)
             {
-                newMatrix[i, newMatrix.GetLength(1)] = result[i];
+                newMatrix[i, matrix.GetLength(1)] = result[i];
+            }
+
+            for (int i = 0; i < result.Length; i++)
+            {
+                newMatrix[newMatrix.GetLength(0)-1, i] = z[i];
+            }
+            for (int i = result.Length; i < newMatrix.GetLength(1); i++)
+            {
+                newMatrix[newMatrix.GetLength(0)-1, i] = 0;
             }
             return newMatrix;
         }

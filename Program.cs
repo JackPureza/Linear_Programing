@@ -18,6 +18,16 @@ namespace TrabalhoMarcia
             int?[,] restrictions = Operations.GetMatrixOfRestrictions(); // returns a matrix of all restriciton's values
 
             int?[,] mergedMatrices = Operations.MergeMatrices(variables, restrictions);
+
+            int?[,] CompleteMatrix = Operations.FinalMatrix(mergedMatrices,Z);
+
+            for (int i = 0; i < CompleteMatrix.GetLength(0); i++)
+            {
+                for (int j = 0; j < CompleteMatrix.GetLength(1); j++)
+                {
+                    Console.WriteLine($"{CompleteMatrix[i, j]}");
+                }
+            }
         }
     }
 }
