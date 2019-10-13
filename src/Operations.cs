@@ -36,6 +36,7 @@ namespace TrabalhoMarcia.src
                     var pos = Z.IndexOf("x1");
                     Z = Z.Remove(0, pos + 2);
                 }
+
                 if (Z.Substring(0, Z.IndexOf("x2")) == "")
                 {
                     x2 = "1";
@@ -92,17 +93,69 @@ namespace TrabalhoMarcia.src
             return expressao;
         }
 
-        public  static string TreatmentOFArtificialVariablesAndRespites(string expression)
+        public static string TreatmentOFArtificialVariablesAndRespites(string expression, int i)
         {
             if (expression.Contains("<=")) 
             {
-                return expression.Replace("<=", "+f=");
+                return expression.Replace("<=", $"+f{i}=");
             }
             if (expression.Contains(">=")) 
             {
-                return expression.Replace(">=", "-f+a=");
+                return expression.Replace(">=", $"-f{i}+a{i}=");
             }
-            return expression.Replace("=", "+a=");
+            return expression.Replace("=", $"+a{i}=");
+        }
+
+        public static string GetNumbersInVariables(string expression)
+        {
+            string x1 = "";
+            string x2 = "";
+
+            if (expression.Substring(0, expression.IndexOf("x1")) == "")
+            {
+                x1 = "1";
+                var pos = expression.IndexOf("x1");
+                expression = expression.Remove(0, pos + 2);
+            }
+            else
+            {
+                x1 = expression.Substring(0, expression.IndexOf("x1"));
+                var pos = expression.IndexOf("x1");
+                expression = expression.Remove(0, pos + 2);
+            }
+
+            if (expression.Substring(0, expression.IndexOf("x2")) == "")
+            {
+                x1 = "1";
+                var pos = expression.IndexOf("x2");
+                expression = expression.Remove(0, pos + 2);
+            }
+            else
+            {
+                x2 = expression.Substring(0, expression.IndexOf("x2"));
+                var pos = expression.IndexOf("x2");
+                expression = expression.Remove(0, pos + 2);
+            }
+
+            if (expression.Contains("+f")) 
+            {
+                var pos = expression.IndexOf("=");
+                expression = expression.Remove(0, pos + 1);
+                return $"{x1}|{x2}|1|{expression}";            
+            }
+            if (expression.Contains("-f"))
+            {
+                var pos = expression.IndexOf("=");
+                expression = expression.Remove(0, pos + 1);
+                return $"{x1}|{x2}|-1|1|{expression}";
+            }
+            if (expression.Contains("+a"))
+            {
+                var pos = expression.IndexOf("=");
+                expression = expression.Remove(0, pos + 1);
+                return $"{x1}|{x2}|1|{expression}";
+            }
+            return "Error";
         }
     }
 }

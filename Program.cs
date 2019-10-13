@@ -13,11 +13,16 @@ namespace TrabalhoMarcia
 
             string[] expressions = Operations.SetLimitantExpressions(); // return a array with all the string expressions
 
-            //treatment of expressions to put artifical variables and respites
+            string[] lines = new string[expressions.Length];
+            //treatment of expressions to put artifical variables and respites, them returns the numbers inside the expressions
             for (int i = 0; i < expressions.Length; i++)
             {
-                expressions[i] = Operations.TreatmentOFArtificialVariablesAndRespites(expressions[i]);
+                expressions[i] = Operations.TreatmentOFArtificialVariablesAndRespites(expressions[i], i);
+                Console.WriteLine(expressions[i]);
+                lines[i] = Operations.GetNumbersInVariables(expressions[i]);
             }
+
+
         }
     }
 }
