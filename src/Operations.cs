@@ -9,6 +9,7 @@ namespace TrabalhoMarcia.src
     {
         public static int numberOfVariables = 0;
         public static int numberOfRestrictions = 0;
+        public static int[] restrictionsSignal;
         public static string GetTypeZ()
         {
             Console.WriteLine("Para Zmax, digite 1, para Zmin digite 2:");
@@ -36,6 +37,34 @@ namespace TrabalhoMarcia.src
         public static int GetNumberOfRestrictions()
         {
             return numberOfRestrictions;
+        }
+
+        public static void SetRestrictionsSignal()
+        {
+            restrictionsSignal = new int[numberOfRestrictions];
+            for (int i = 0; i < numberOfRestrictions; i++)
+            {
+                Console.WriteLine($"Digite o sinal da {i}ª restrição:");
+                string sinal = Console.ReadLine();
+
+                if (sinal == "<=")
+                {
+                    restrictionsSignal[i] = 1;
+                }
+                if (sinal == "=")
+                {
+                    restrictionsSignal[i] = 2;
+                }
+                if (sinal == ">=")
+                {
+                    restrictionsSignal[i] = 3;
+                }
+            }
+        }
+
+        public static int[] GetRestrictionsSignal()
+        {
+            return restrictionsSignal;
         }
 
         public static int[] GetZ(string typeZ)
@@ -88,29 +117,24 @@ namespace TrabalhoMarcia.src
 
             int count = 0;
             string[] restricao = new string[numberOfRestrictions];
-            int[] qualsinal = new int[numberOfRestrictions];
+            SetRestrictionsSignal();
+            int[] restrictionsSignal = GetRestrictionsSignal();
             for (int i = 0; i < numberOfRestrictions; i++)
             {
-                Console.WriteLine($"Digite o sinal da {i}ª restrição:");
-                string sinal = Console.ReadLine();
-
-                if (sinal == "<=")
+                if (restrictionsSignal == 1)
                 {
                     count++;
                     restricao[i] = $"1f{i}";
-                    qualsinal[i] = 1;
                 }
-                if (sinal == "=")
+                if (sinal == 2)
                 {
                     count++;
                     restricao[i] = $"1a{i}";
-                    qualsinal[i] = 2;
                 }
-                if (sinal == ">=")
+                if (sinal == 3)
                 {
                     count = count + 2;
                     restricao[i] = $"-1f{i}+1a{i}";
-                    qualsinal[i] = 3;
                 }
             }
 

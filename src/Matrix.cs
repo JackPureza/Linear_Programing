@@ -25,16 +25,17 @@ namespace TrabalhoMarcia.src
 
         public bool isSimplex()
         {
-            bool simplex;
+            bool simplex = true;
+            int[] restrictionsSignal = Operations.GetRestrictionsSignal();
 
-            if (this.typeZ == "1")
+            foreach (int signal in restrictionsSignal)
             {
-                simplex == true;
+                    if (signal != 1)
+                    {
+                        simplex = false;
+                    }
             }
-            else
-            {
-                simplex == false;
-            }
+
             return simplex;
         }
 
