@@ -121,17 +121,17 @@ namespace TrabalhoMarcia.src
             int[] restrictionsSignal = GetRestrictionsSignal();
             for (int i = 0; i < numberOfRestrictions; i++)
             {
-                if (restrictionsSignal == 1)
+                if (restrictionsSignal[i] == 1)
                 {
                     count++;
                     restricao[i] = $"1f{i}";
                 }
-                if (sinal == 2)
+                if (restrictionsSignal[i] == 2)
                 {
                     count++;
                     restricao[i] = $"1a{i}";
                 }
-                if (sinal == 3)
+                if (restrictionsSignal[i] == 3)
                 {
                     count = count + 2;
                     restricao[i] = $"-1f{i}+1a{i}";
@@ -146,7 +146,7 @@ namespace TrabalhoMarcia.src
                 {
                     if (i == j)
                     {
-                        switch (qualsinal[i])
+                        switch (restrictionsSignal[i])
                         {
                             case 1:
                                 matrix[i, j] = int.Parse(restricao[i].Substring(0, restricao[i].IndexOf("f")));
