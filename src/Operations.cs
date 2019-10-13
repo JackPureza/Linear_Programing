@@ -7,7 +7,8 @@ namespace TrabalhoMarcia.src
 {
     public class Operations
     {
-        public static int qtdZeros = 0;
+        public static int numberOfVariables = 0;
+        public static int numberOfRestrictions = 0;
         public static string GetTypeZ()
         {
             Console.WriteLine("Para Zmax, digite 1, para Zmin digite 2:");
@@ -15,174 +16,134 @@ namespace TrabalhoMarcia.src
             return Ztipo;
         }
 
-        public static string GetZ(string typeZ)
+        public static void SetNumberOfVariables()
         {
-
-            string x1 = "";
-            string x2 = "";
-            string result = "";
-            Console.WriteLine("Digite a expressão de Z:");
-            var Z = Console.ReadLine();
-            if (Z.Contains("x1") && Z.Contains("x2"))
-            {
-                if (Z.Substring(0, Z.IndexOf("x1")) == "")
-                {
-                    x1 = "1";
-                    var pos = Z.IndexOf("x1");
-                    Z = Z.Remove(0, pos + 2);
-                }
-                else
-                {
-                    x1 = Z.Substring(0, Z.IndexOf("x1"));
-                    var pos = Z.IndexOf("x1");
-                    Z = Z.Remove(0, pos + 2);
-                }
-
-                if (Z.Substring(0, Z.IndexOf("x2")) == "")
-                {
-                    x2 = "1";
-                    var pos = Z.IndexOf("x2");
-                    Z = Z.Remove(0, pos + 2);
-                }
-                else
-                {
-                    x2 = Z.Substring(0, Z.IndexOf("x2"));
-                    var pos = Z.IndexOf("x2");
-                    Z = Z.Remove(0, pos + 2);
-                }
-
-                Z = Z.Replace("=", "");
-                int newX1 = int.Parse(x1);
-                int newX2 = int.Parse(x2);
-                int newZ = int.Parse(Z);
-
-                if (typeZ == "1")
-                {
-                    newX1 = newX1 * -1;
-                    newX2 = newX2 * -1;
-                    newZ = newZ * -1;
-                }
-
-                Console.WriteLine($"Z = {newX1}{newX2}{newZ}");
-                result = $"{newX1}|{newX2}|{newZ}";
-                return result;
-            }
-            else
-            {
-                Console.WriteLine("You must put x1 and x2");
-                return null;
-            }
+            Console.WriteLine("Digite a quantidade de variaveis que será inserida");
+            numberOfVariables = int.Parse(Console.ReadLine());
         }
 
-        public static string[] SetLimitantExpressions()
+        public static int GetNumberOfVariables()
         {
-            string[] expressao = new string[50];
+            return numberOfVariables;
+        }
 
-            for (int i = 0; i <= expressao.Length; i++)
+        public static void SetNumberOfRestrictions()
+        {
+            Console.WriteLine("Digite a quantidade de restrições que será inserida");
+            numberOfRestrictions = int.Parse(Console.ReadLine());
+        }
+
+        public static int GetNumberOfRestrictions()
+        {
+            return numberOfRestrictions;
+        }
+
+        public static int[] GetZ(string typeZ)
+        {
+            int numberofVariables = GetNumberOfVariables();
+            int[] z = new int[numberofVariables + 1];
+            for (int i = 0; i < numberofVariables; i++)
             {
-                Console.WriteLine("Digite expressão limitante:");
-                expressao[i] = Console.ReadLine();
+                Console.WriteLine($"Digite o valor para x{i} de Z:");
+                int number = int.Parse(Console.ReadLine());
+                z[i] = number;
+            }
 
-                Console.WriteLine("Se não quiser escrever outra expressao, digite falso, caso queira digite qualquer valor:");
-                var aux = Console.ReadLine();
-                if (aux == "falso")
+            Console.WriteLine("Digite o valor do resultado de Z");
+            int result = int.Parse(Console.ReadLine());
+
+            if (typeZ == "1")
+            {
+                for (int i = 0; i < numberofVariables; i++)
                 {
-                    break;
+                    z[i] = z[i] * -1;
+                }
+                result = result * -1;
+            }
+
+            z[z.Length] = result;
+            return z;
+        }
+
+        public static int[,] GetMatrixOfVaribles()
+        {
+            int numberOfRestrictions = GetNumberOfRestrictions();
+            int numberOfVariables = GetNumberOfVariables();
+            int[,] expression = new int[numberOfRestrictions, numberOfVariables];
+
+            for (int i = 0; i < numberOfRestrictions; i++)
+            {
+                for (int j = 0; j < numberOfVariables; j++)
+                {
+                    Console.WriteLine($"Digite o numero da {j}ª variavel da {i}ª expressão:");
+                    expression[j, i] = int.Parse(Console.ReadLine());
                 }
             }
 
-            return expressao;
+            return expression;
         }
 
-        public static string TreatmentOFArtificialVariablesAndRespites(string expression, int i)
+        public static int?[,] GetMatrixOfRestrictions()
         {
-            if (expression.Contains("<="))
-            {
-                return expression.Replace("<=", $"+f{i}=");
-            }
-            if (expression.Contains(">="))
-            {
-                return expression.Replace(">=", $"-f{i}+a{i}=");
-            }
-            return expression.Replace("=", $"+a{i}=");
-        }
 
-        public static string GetNumbersInVariables(string expression)
-        {
-            string x1 = "";
-            string x2 = "";
+            int count = 0;
+            string[] restricao = new string[numberOfRestrictions];
+            int[] qualsinal = new int[numberOfRestrictions];
+            for (int i = 0; i < numberOfRestrictions; i++)
+            {
+                Console.WriteLine($"Digite o sinal da {i}ª restrição:");
+                string sinal = Console.ReadLine();
 
-            if (expression.Substring(0, expression.IndexOf("x1")) == "")
-            {
-                x1 = "1";
-                var pos = expression.IndexOf("x1");
-                expression = expression.Remove(0, pos + 2);
-            }
-            else
-            {
-                x1 = expression.Substring(0, expression.IndexOf("x1"));
-                var pos = expression.IndexOf("x1");
-                expression = expression.Remove(0, pos + 2);
-            }
-
-            if (expression.Substring(0, expression.IndexOf("x2")) == "")
-            {
-                x1 = "1";
-                var pos = expression.IndexOf("x2");
-                expression = expression.Remove(0, pos + 2);
-            }
-            else
-            {
-                x2 = expression.Substring(0, expression.IndexOf("x2"));
-                var pos = expression.IndexOf("x2");
-                expression = expression.Remove(0, pos + 2);
+                if (sinal == "<=")
+                {
+                    count++;
+                    restricao[i] = $"1f{i}";
+                    qualsinal[i] = 1;
+                }
+                if (sinal == "=")
+                {
+                    count++;
+                    restricao[i] = $"1a{i}";
+                    qualsinal[i] = 2;
+                }
+                if (sinal == ">=")
+                {
+                    count = count + 2;
+                    restricao[i] = $"-1f{i}+1a{i}";
+                    qualsinal[i] = 3;
+                }
             }
 
-            if (expression.Contains("+f"))
-            {
-                var pos = expression.IndexOf("=");
-                expression = expression.Remove(0, pos + 1);
-                string result = $"{x1}|{x2}{NumberOfZeros(qtdZeros)}|1|{expression}";
-                qtdZeros += 1;
-                return result;
-            }
-            if (expression.Contains("-f"))
-            {
-                var pos = expression.IndexOf("=");
-                expression = expression.Remove(0, pos + 1);
-                string result = $"{x1}|{x2}{NumberOfZeros(qtdZeros)}|-1|1|{expression}";
-                qtdZeros += 2;
-                return result;
-            }
-            if (expression.Contains("+a"))
-            {
-                var pos = expression.IndexOf("=");
-                expression = expression.Remove(0, pos + 1);
-                string result = $"{x1}|{x2}{NumberOfZeros(qtdZeros)}|1|{expression}";
-                qtdZeros += 1;
-                return result;
-            }
-            return "Error";
-        }
+            int?[,] matrix = new int?[numberOfRestrictions, count];
 
-        public static string NumberOfZeros(int n) 
-        {
-            string zeros = "";
-            if (n == 0) {
-                return "|";
-            }
-            for (int i = 0; i < n; i++)
+            for (int i = 0; i < count; i++)
             {
-                zeros += "|0";
+                for (int j = 0; j < numberOfRestrictions; j++)
+                {
+                    if (i == j)
+                    {
+                        switch (qualsinal[i])
+                        {
+                            case 1:
+                                matrix[i, j] = int.Parse(restricao[i].Substring(0, restricao[i].IndexOf("f")));
+                                break;
+                            case 2:
+                                matrix[i, j] = int.Parse(restricao[i].Substring(0, restricao[i].IndexOf("a")));
+                                break;
+                            case 3:
+                                matrix[i, j] = int.Parse(restricao[i].Substring(0, restricao[i].IndexOf("f")));
+                                restricao[i].Remove(0, restricao[i].IndexOf("f") + 1);
+                                matrix[i + 1, j] = int.Parse(restricao[i].Substring(0, restricao[i].IndexOf("a")));
+                                break;
+                        }
+                    }
+                    else if (matrix[i, j] == null)
+                    {
+                        matrix[i, j] = 0;
+                    }
+                }
             }
-            return zeros;
-        }
-
-        public static int[] PopulateAndOrganizeMatrix(string[] expressions) 
-        {
-            int[] lines = new int[expressions.Length];
-            
-
+            return matrix;
         }
     }
 }
