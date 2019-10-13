@@ -8,23 +8,26 @@ namespace TrabalhoMarcia.src
 {
     public class Matrix
     {
-        private Operations operations;
-
-        public Matrix(Operations operations)
+        public static void resolveMatrix()
         {
-            this.operations = operations;
+            while (!this.isResolved())
+            {
+                if (this.isSimplex())
+                {
+                    this.simplex();
+                }
+                else
+                {
+                    this.twoFases();
+                }
+            }
         }
 
-        public void resolveMatrix()
-        {
-
-        }
-
-        public bool isSimplex(Operations operations, var type)
+        public bool isSimplex()
         {
             bool simplex;
 
-            if (type == "1")
+            if (this.typeZ == "1")
             {
                 simplex == true;
             }
@@ -32,8 +35,23 @@ namespace TrabalhoMarcia.src
             {
                 simplex == false;
             }
-
             return simplex;
+        }
+
+        public bool isResolved()
+        {
+            bool resolved;
+            return resolved;
+        }
+
+        public int[,] simplex(int[,] matrix)
+        {
+            return matrix;
+        }
+
+        public int[,] twoFases(int[,] matrix)
+        {
+            return matrix;
         }
     }
 }
