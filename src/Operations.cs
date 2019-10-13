@@ -49,8 +49,8 @@ namespace TrabalhoMarcia.src
                 z[i] = number;
             }
 
-            Console.WriteLine("Digite o valor do resultado de Z");
-            int result = int.Parse(Console.ReadLine());
+            //Console.WriteLine("Digite o valor do resultado de Z");
+            //int result = int.Parse(Console.ReadLine());
 
             if (typeZ == "1")
             {
@@ -58,10 +58,10 @@ namespace TrabalhoMarcia.src
                 {
                     z[i] = z[i] * -1;
                 }
-                result = result * -1;
+                //  result = result * -1;
             }
 
-            z[z.Length] = result;
+            //z[z.Length] = result;
             return z;
         }
 
@@ -167,9 +167,42 @@ namespace TrabalhoMarcia.src
             return newMatrix;
         }
 
-        public static int?[,] FinalMatrix() 
-        { 
-            
+        public static int?[,] FinalMatrix(int?[] matrix, int[] z)
+        {
+            int?[,] newMatrix = new int?[matrix.GetLength(0) + 1, matrix.GetLength(1) + 1];
+
+            for (int i = 0; i < newMatrix.GetLength(0); i++)
+            {
+                if (!z[i].Equals(""))
+                {
+                    newMatrix[newMatrix.GetLength(0), i] = z[i];
+                }
+                else
+                {
+                    newMatrix[newMatrix.GetLength(0), i] = 0;
+                }
+            }
+
+            int[] result = GetResult(newMatrix.GetLength(1));
+
+            for (int i = 0; i < newMatrix.GetLength(1); i++)
+            {
+                newMatrix[i, newMatrix.GetLength(1)] = result[i];
+            }
+            return newMatrix;
+        }
+
+        public static int[] GetResult(int height)
+        {
+            int[] results = new int[height];
+            for (int i = 0; i < height; i++)
+            {
+                Console.WriteLine($"Digite o resultado da {i}ª limitante:");
+                results[i] = int.Parse(Console.ReadLine());
+
+            }
+
+            return results;
         }
     }
 }

@@ -16,8 +16,8 @@ namespace TrabalhoMarcia
             int[,] variables = Operations.GetMatrixOfVaribles(); // return a matrix of all the variable's values 
 
             int?[,] restrictions = Operations.GetMatrixOfRestrictions(); // returns a matrix of all restriciton's values
-            
 
+            int?[,] mergedMatrices = Operations.MergeMatrices(variables, restrictions);
         }
     }
 }
