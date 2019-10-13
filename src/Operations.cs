@@ -50,7 +50,7 @@ namespace TrabalhoMarcia.src
                 }
 
                 Z = Z.Replace("=", "");
-                int newX1 = int.Parse(x1); 
+                int newX1 = int.Parse(x1);
                 int newX2 = int.Parse(x2);
                 int newZ = int.Parse(Z);
 
@@ -60,7 +60,8 @@ namespace TrabalhoMarcia.src
                     newX2 = newX2 * -1;
                     newZ = newZ * -1;
                 }
-                
+
+                Console.WriteLine($"Z = {newX1}{newX2}{newZ}");
                 result = $"{newX1}|{newX2}|{newZ}";
                 return result;
             }
@@ -89,6 +90,19 @@ namespace TrabalhoMarcia.src
             }
 
             return expressao;
+        }
+
+        public  static string TreatmentOFArtificialVariablesAndRespites(string expression)
+        {
+            if (expression.Contains("<=")) 
+            {
+                return expression.Replace("<=", "+f=");
+            }
+            if (expression.Contains(">=")) 
+            {
+                return expression.Replace(">=", "-f+a=");
+            }
+            return expression.Replace("=", "+a=");
         }
     }
 }
