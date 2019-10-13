@@ -7,6 +7,7 @@ namespace TrabalhoMarcia.src
 {
     public class Operations
     {
+        public static int qtdZeros = 0;
         public static string GetTypeZ()
         {
             Console.WriteLine("Para Zmax, digite 1, para Zmin digite 2:");
@@ -141,30 +142,47 @@ namespace TrabalhoMarcia.src
             {
                 var pos = expression.IndexOf("=");
                 expression = expression.Remove(0, pos + 1);
-                return $"{x1}|{x2}|1|{expression}";
+                string result = $"{x1}|{x2}{NumberOfZeros(qtdZeros)}|1|{expression}";
+                qtdZeros += 1;
+                return result;
             }
             if (expression.Contains("-f"))
             {
                 var pos = expression.IndexOf("=");
                 expression = expression.Remove(0, pos + 1);
-                return $"{x1}|{x2}|-1|1|{expression}";
+                string result = $"{x1}|{x2}{NumberOfZeros(qtdZeros)}|-1|1|{expression}";
+                qtdZeros += 2;
+                return result;
             }
             if (expression.Contains("+a"))
             {
                 var pos = expression.IndexOf("=");
                 expression = expression.Remove(0, pos + 1);
-                return $"{x1}|{x2}|1|{expression}";
+                string result = $"{x1}|{x2}{NumberOfZeros(qtdZeros)}|1|{expression}";
+                qtdZeros += 1;
+                return result;
             }
             return "Error";
         }
 
+        public static string NumberOfZeros(int n) 
+        {
+            string zeros = "";
+            if (n == 0) {
+                return "|";
+            }
+            for (int i = 0; i < n; i++)
+            {
+                zeros += "|0";
+            }
+            return zeros;
+        }
+
         public static int[] PopulateAndOrganizeMatrix(string[] expressions) 
         {
-            int[] lines = new int[expressions.Length]; 
-            for (int i = expressions.Length; i > 0 ; i--)
-            {
-               
-            }
+            int[] lines = new int[expressions.Length];
+            
+
         }
     }
 }
