@@ -29,7 +29,7 @@ namespace TrabalhoMarcia.src
             return simplex;
         }
 
-        public static void PrintMatrix(int?[,] matrix)
+        public static void PrintMatrix(double?[,] matrix)
         {
             for (int i = 0; i < matrix.GetLength(0); i++)
             {
@@ -45,19 +45,19 @@ namespace TrabalhoMarcia.src
             }
         }
 
-        public static int?[,] SimplexResolve(int?[,] matrix)
+        public static double?[,] SimplexResolve(double?[,] matrix)
         {
-            bool verification = false;
+            bool verification = true;
 
             while (verification)
             {
                 int chosenColumn = GetChosenColumn(matrix);
                 int chosenLine = ProductionProcess(matrix);
 
-                int[,] matrixAux = new int[matrix.GetLength(0), matrix.GetLength(1)];
+                double[,] matrixAux = new double[matrix.GetLength(0), matrix.GetLength(1)];
 
 
-                int pivo = matrix[chosenLine, chosenColumn] / matrix[chosenLine, chosenColumn] ?? default(int);
+                double pivo = matrix[chosenLine, chosenColumn] / matrix[chosenLine, chosenColumn] ?? default(int);
 
                 matrixAux[chosenLine, chosenColumn] = pivo;
 
@@ -72,6 +72,10 @@ namespace TrabalhoMarcia.src
                 for (int i = 0; i < matrix.GetLength(0); i++)
                 {
                     chosenLine++;
+                    if (chosenLine >= matrix.GetLength(0))
+                    {
+                        chosenLine = 0;
+                    }
                     for (int j = 0; j < matrix.GetLength(1); j++)
                     {
                         matrixAux[chosenLine, j] = (matrix[chosenLine, j] - matrix[chosenLine, chosenColumn]) * pivo ?? default(int);
@@ -92,47 +96,55 @@ namespace TrabalhoMarcia.src
             return matrix;
         }
 
-        public static int ProductionProcess(int?[,] matrix)
+        public static int ProductionProcess(double?[,] matrix)
         {
 
             int chosenColumn = GetChosenColumn(matrix);
-
-            int? chosenLine = 0;
+            int line = 0;
+            double? chosenLine = 999999999;
+            double? comp;
             for (int i = 0; i < matrix.GetLength(0); i++)
             {
-                int? comp = matrix[i, matrix.GetLength(1)] / matrix[i, chosenColumn];
+                if (matrix[i,chosenColumn] == 0)
+                {
+                    comp = -1;
+                }
+                else
+                {
+                    comp = matrix[i, matrix.GetLength(1) - 1] / matrix[i, chosenColumn];
+                }
 
-                if (comp < chosenLine)
+                if (comp < chosenLine && comp >= 0)
                 {
                     chosenLine = comp;
+                    line = i;
                 }
             }
-            int line = chosenLine ?? default(int);
 
             return line;
         }
 
-        public static int GetChosenColumn(int?[,] matrix)
+        public static int GetChosenColumn(double?[,] matrix)
         {
-            int? comparator = matrix[matrix.GetLength(0), 1];
+            double? comparator = matrix[matrix.GetLength(0) - 1, 1];
             int chosenColumn = 0;
 
             for (int i = 0; i < matrix.GetLength(1); i++)
             {
-                if (matrix[matrix.GetLength(0), i] < comparator)
+                if (matrix[matrix.GetLength(0) - 1, i] < comparator)
                 {
-                    comparator = matrix[matrix.GetLength(0), i];
+                    comparator = matrix[matrix.GetLength(0) - 1, i];
                     chosenColumn = i;
                 }
             }
             return chosenColumn;
         }
 
-        public static bool VerifyLastLine(int?[,] matrix)
+        public static bool VerifyLastLine(double?[,] matrix)
         {
             for (int i = 0; i < matrix.GetLength(1); i++)
             {
-                if (matrix[matrix.GetLength(0), i] < 0)
+                if (matrix[matrix.GetLength(0) - 1, i] < 0)
                     return false;
                 return true;
             }

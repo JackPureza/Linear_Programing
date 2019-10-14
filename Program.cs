@@ -19,20 +19,13 @@ namespace TrabalhoMarcia
 
             int?[,] mergedMatrices = Operations.MergeMatrices(variables, restrictions); //return the matrices together 
 
-            int?[,] CompleteMatrix = Operations.FinalMatrix(mergedMatrices,Z); //puts te Z and result on the matrix 
+            int?[,] CompleteMatrix = Operations.FinalMatrix(mergedMatrices, Z); //puts te Z and result on the matrix 
 
             Matrix.PrintMatrix(CompleteMatrix); //prints any matrices
 
-            bool isSimplex = Matrix.isSimplex(typeZ);
+            //bool isSimplex = Matrix.isSimplex(typeZ);
 
-            if (isSimplex)
-            {
-                Matrix.SimplexResolve(CompleteMatrix);
-            }
-            else
-            {
-
-            }
+            Matrix.SimplexResolve(CompleteMatrix);
         }
     }
 }

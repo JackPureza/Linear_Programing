@@ -67,14 +67,14 @@ namespace TrabalhoMarcia.src
             return restrictionsSignal;
         }
 
-        public static int[] GetZ(string typeZ)
+        public static double[] GetZ(string typeZ)
         {
             int numberofVariables = GetNumberOfVariables();
-            int[] z = new int[numberofVariables + 1];
+            double[] z = new double[numberofVariables + 1];
             for (int i = 0; i < numberofVariables; i++)
             {
                 Console.WriteLine($"Digite o valor para x{i + 1} de Z:");
-                int number = int.Parse(Console.ReadLine());
+                double number = double.Parse(Console.ReadLine());
                 z[i] = number;
             }
 
@@ -94,25 +94,25 @@ namespace TrabalhoMarcia.src
             return z;
         }
 
-        public static int[,] GetMatrixOfVaribles()
+        public static double[,] GetMatrixOfVaribles()
         {
             int numberOfRestrictions = GetNumberOfRestrictions();
             int numberOfVariables = GetNumberOfVariables();
-            int[,] expression = new int[numberOfRestrictions, numberOfVariables];
+            double[,] expression = new double[numberOfRestrictions, numberOfVariables];
 
             for (int i = 0; i < numberOfRestrictions; i++)
             {
                 for (int j = 0; j < numberOfVariables; j++)
                 {
                     Console.WriteLine($"Digite o numero da {j + 1}ª variavel da {i + 1}ª expressão:");
-                    expression[i, j] = int.Parse(Console.ReadLine());
+                    expression[i, j] = double.Parse(Console.ReadLine());
                 }
             }
 
             return expression;
         }
 
-        public static int?[,] GetMatrixOfRestrictions()
+        public static double?[,] GetMatrixOfRestrictions()
         {
             int count = 0;
             int countBiggerThen = 0;
@@ -138,7 +138,7 @@ namespace TrabalhoMarcia.src
                 }
             }
 
-            int?[,] matrix = new int?[numberOfRestrictions, count];
+            double?[,] matrix = new double?[numberOfRestrictions, count];
 
             for (int i = 0; i < numberOfRestrictions; i++)
             {
@@ -152,37 +152,37 @@ namespace TrabalhoMarcia.src
                                 if (countBiggerThen != 0)
                                 {
                                     matrix[i, j] = 0;
-                                    matrix[i, j + countBiggerThen] = int.Parse(restricao[i].Substring(0, restricao[i].IndexOf("f")));
+                                    matrix[i, j + countBiggerThen] = double.Parse(restricao[i].Substring(0, restricao[i].IndexOf("f")));
                                 }
                                 else
                                 {
-                                    matrix[i, j] = int.Parse(restricao[i].Substring(0, restricao[i].IndexOf("f")));
+                                    matrix[i, j] = double.Parse(restricao[i].Substring(0, restricao[i].IndexOf("f")));
                                 }
                                 break;
                             case 2:
                                 if (countBiggerThen != 0)
                                 {
                                     matrix[i, j] = 0;
-                                    matrix[i, j + countBiggerThen] = int.Parse(restricao[i].Substring(0, restricao[i].IndexOf("a")));
+                                    matrix[i, j + countBiggerThen] = double.Parse(restricao[i].Substring(0, restricao[i].IndexOf("a")));
                                 }
                                 else
                                 {
-                                    matrix[i, j] = int.Parse(restricao[i].Substring(0, restricao[i].IndexOf("a")));
+                                    matrix[i, j] = double.Parse(restricao[i].Substring(0, restricao[i].IndexOf("a")));
                                 }
                                 break;
                             case 3:
                                 if (countBiggerThen != 0)
                                 {
                                     matrix[i, j] = 0;
-                                    matrix[i, j + countBiggerThen] = int.Parse(restricao[i].Substring(0, restricao[i].IndexOf("f")));
+                                    matrix[i, j + countBiggerThen] = double.Parse(restricao[i].Substring(0, restricao[i].IndexOf("f")));
                                     restricao[i] = restricao[i].Remove(0, restricao[i].IndexOf("+"));
-                                    matrix[i, j + countBiggerThen + 1] = int.Parse(restricao[i].Substring(0, restricao[i].IndexOf("a")));
+                                    matrix[i, j + countBiggerThen + 1] = double.Parse(restricao[i].Substring(0, restricao[i].IndexOf("a")));
                                 }
                                 else
                                 {
-                                    matrix[i, j] = int.Parse(restricao[i].Substring(0, restricao[i].IndexOf("f")));
+                                    matrix[i, j] = double.Parse(restricao[i].Substring(0, restricao[i].IndexOf("f")));
                                     restricao[i] = restricao[i].Remove(0, restricao[i].IndexOf("+"));
-                                    matrix[i, j + 1] = int.Parse(restricao[i].Substring(0, restricao[i].IndexOf("a")));
+                                    matrix[i, j + 1] = double.Parse(restricao[i].Substring(0, restricao[i].IndexOf("a")));
                                 }
                                 countBiggerThen++;
                                 break;
@@ -197,9 +197,9 @@ namespace TrabalhoMarcia.src
             return matrix;
         }
 
-        public static int?[,] MergeMatrices(int[,] matrixVariables, int?[,] matrixRestrictions)
+        public static double?[,] MergeMatrices(double[,] matrixVariables, double?[,] matrixRestrictions)
         {
-            int?[,] newMatrix = new int?[matrixRestrictions.GetLength(0), matrixVariables.GetLength(1) + matrixRestrictions.GetLength(1)];
+            double?[,] newMatrix = new double?[matrixRestrictions.GetLength(0), matrixVariables.GetLength(1) + matrixRestrictions.GetLength(1)];
 
             for (int i = 0; i < matrixVariables.GetLength(0); i++)
             {
@@ -218,11 +218,11 @@ namespace TrabalhoMarcia.src
             return newMatrix;
         }
 
-        public static int?[,] FinalMatrix(int?[,] matrix, int[] z)
+        public static double?[,] FinalMatrix(double?[,] matrix, double[] z)
         {
-            int?[,] newMatrix = new int?[matrix.GetLength(0) + 1, matrix.GetLength(1) + 1];
+            double?[,] newMatrix = new double?[matrix.GetLength(0) + 1, matrix.GetLength(1) + 1];
 
-            int[] result = GetResult(newMatrix.GetLength(0) - 1);
+            double[] result = GetResult(newMatrix.GetLength(0) - 1);
 
             for (int i = 0; i < matrix.GetLength(0); i++)
             {
@@ -247,13 +247,13 @@ namespace TrabalhoMarcia.src
             return newMatrix;
         }
 
-        public static int[] GetResult(int height)
+        public static double[] GetResult(int height)
         {
-            int[] results = new int[height];
+            double[] results = new double[height];
             for (int i = 0; i < height; i++)
             {
                 Console.WriteLine($"Digite o resultado da {i + 1}ª limitante:");
-                results[i] = int.Parse(Console.ReadLine());
+                results[i] = double.Parse(Console.ReadLine());
 
             }
 
