@@ -36,22 +36,22 @@ namespace TrabalhoMarcia.src
                 Console.WriteLine("-----------------------------------");
                 for (int j = 0; j < matrix.GetLength(1); j++)
                 {
-                    Console.Write($"|\t{matrix[i, j]}\t|");
+                    Console.Write($"| {matrix[i, j]} |");
                 }
                 Console.WriteLine();
                 if (i == matrix.GetLength(0) - 1)
                     Console.WriteLine("-----------------------------------");
+
             }
         }
 
         public static int?[,] SimplexResolve(int?[,] matrix)
         {
             ProductionProcess(matrix);
-
+            
         }
 
-        public static int? ProductionProcess(int?[,] matrix)
-        {
+        public static int? ProductionProcess(int?[,] matrix) {
 
             int? comparator = matrix[matrix.GetLength(0), 1];
             int chosenColumn = 0;
@@ -75,11 +75,6 @@ namespace TrabalhoMarcia.src
                 }
             }
             return chosenLine;
-        }
-
-        public static int?[,] TwoPhasesResolve(int?[,] matrix)
-        {
-
         }
     }
 }
