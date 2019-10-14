@@ -70,7 +70,8 @@ namespace TrabalhoMarcia.src
         public static double[] GetZ(string typeZ)
         {
             int numberofVariables = GetNumberOfVariables();
-            double[] z = new double[numberofVariables + 1];
+            int numberofRestrictions = GetNumberOfRestrictions();
+            double[] z = new double[numberofVariables + numberofRestrictions + 1];
             for (int i = 0; i < numberofVariables; i++)
             {
                 Console.WriteLine($"Digite o valor para x{i + 1} de Z:");

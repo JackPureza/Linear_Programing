@@ -52,62 +52,66 @@ namespace TrabalhoMarcia.src
             while (verification)
             {
                 int chosenColumn = GetChosenColumn(matrix);
-                int chosenLine = ProductionProcess(matrix);
-
-                double[,] matrixAux = new double[matrix.GetLength(0), matrix.GetLength(1)];
-
-
-                double pivo = matrix[chosenLine, chosenColumn] / matrix[chosenLine, chosenColumn] ?? default(int);
-
-                matrixAux[chosenLine, chosenColumn] = pivo;
-
-                for (int i = 0; i < matrix.GetLength(1); i++)
+                int? chosenL = ProductionProcess(matrix);
+                if (chosenL != null)
                 {
-                    if (i != chosenColumn)
-                    {
-                        matrixAux[chosenLine, i] = matrix[chosenLine, i] / matrix[chosenLine, chosenColumn] ?? default(int);
-                    }
-                }
+                    int chosenLine = Convert.ToInt32(chosenL);
+                    double[,] matrixAux = new double[matrix.GetLength(0), matrix.GetLength(1)];
 
-                for (int i = 0; i < matrix.GetLength(0); i++)
+
+                    double pivo = matrix[chosenLine, chosenColumn] / matrix[chosenLine, chosenColumn] ?? default(int);
+
+                    matrixAux[chosenLine, chosenColumn] = pivo;
+
+                    for (int i = 0; i < matrix.GetLength(1); i++)
+                    {
+                        if (i != chosenColumn)
+                        {
+                            matrixAux[chosenLine, i] = matrix[chosenLine, i] / matrix[chosenLine, chosenColumn] ?? default(int);
+                        }
+                    }
+
+                    for (int i = 0; i < matrix.GetLength(0); i++)
+                    {
+                        if (i != chosenLine)
+                        {
+                            for (int j = 0; j < matrix.GetLength(1); j++)
+                            {
+                                matrixAux[i, j] = (matrix[i, j] - matrix[i, chosenColumn]) * matrix[chosenLine, j] ?? default(int);
+                            }
+                        }
+                    }
+
+                    for (int i = 0; i < matrix.GetLength(0); i++)
+                    {
+                        for (int j = 0; j < matrix.GetLength(1); j++)
+                        {
+                            matrix[i, j] = matrixAux[i, j];
+                        }
+
+                    }
+                    PrintMatrix(matrix);
+                    verification = VerifyLastLine(matrix);
+                }
+                else
                 {
-                    chosenLine++;
-                    if (chosenLine >= matrix.GetLength(0))
-                    {
-                        chosenLine = 0;
-                    }
-                    for (int j = 0; j < matrix.GetLength(1); j++)
-                    {
-                        matrixAux[chosenLine, j] = (matrix[chosenLine, j] - matrix[chosenLine, chosenColumn]) * pivo ?? default(int);
-                    }
+                    verification = false;
                 }
-
-                for (int i = 0; i < matrix.GetLength(0); i++)
-                {
-                    for (int j = 0; j < matrix.GetLength(1); j++)
-                    {
-                        matrix[i, j] = matrixAux[i, j];
-                    }
-
-                }
-                PrintMatrix(matrix);
-                verification = VerifyLastLine(matrix);
             }
             return matrix;
         }
 
-        public static int ProductionProcess(double?[,] matrix)
+        public static int? ProductionProcess(double?[,] matrix)
         {
-
             int chosenColumn = GetChosenColumn(matrix);
-            int line = 0;
+            int? line = null;
             double? chosenLine = 999999999;
             double? comp;
-            for (int i = 0; i < matrix.GetLength(0); i++)
+            for (int i = 0; i < matrix.GetLength(0) - 1; i++)
             {
                 if (matrix[i,chosenColumn] == 0)
                 {
-                    comp = -1;
+                    comp = 999999999;
                 }
                 else
                 {
