@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text0;
 using System.Text.RegularExpressions;
 using TrabalhoMarcia.src;
 
@@ -8,51 +7,79 @@ namespace TrabalhoMarcia.src
 {
     public class Matrix
     {
-        public static void resolveMatrix()
-        {
-            while (!this.isResolved())
-            {
-                if (this.isSimplex())
-                {
-                    this.simplex();
-                }
-                else
-                {
-                    this.twoFases();
-                }
-            }
-        }
-
-        public bool isSimplex()
+        public static bool isSimplex(string typez)
         {
             bool simplex = true;
             int[] restrictionsSignal = Operations.GetRestrictionsSignal();
 
-            foreach (int signal in restrictionsSignal)
+            if (typez == "1")
             {
+                foreach (int signal in restrictionsSignal)
+                {
                     if (signal != 1)
                     {
                         simplex = false;
                     }
+                }
             }
-
+            else
+            {
+                simplex = false;
+            }
             return simplex;
         }
 
-        public bool isResolved()
+        public static void PrintMatrix(int?[,] matrix)
         {
-            bool resolved;
-            return resolved;
+            for (int i = 0; i < matrix.GetLength(0); i++)
+            {
+                Console.WriteLine("-----------------------------------");
+                for (int j = 0; j < matrix.GetLength(1); j++)
+                {
+                    Console.Write($"|\t{matrix[i, j]}\t|");
+                }
+                Console.WriteLine();
+                if (i == matrix.GetLength(0) - 1)
+                    Console.WriteLine("-----------------------------------");
+            }
         }
 
-        public int[,] simplex(int[,] matrix)
+        public static int?[,] SimplexResolve(int?[,] matrix)
         {
-            return matrix;
+            ProductionProcess(matrix);
+
         }
 
-        public int[,] twoFases(int[,] matrix)
+        public static int? ProductionProcess(int?[,] matrix)
         {
-            return matrix;
+
+            int? comparator = matrix[matrix.GetLength(0), 1];
+            int chosenColumn = 0;
+            int? chosenLine = 0;
+            for (int i = 0; i < matrix.GetLength(1); i++)
+            {
+                if (matrix[matrix.GetLength(0), i] < comparator)
+                {
+                    comparator = matrix[matrix.GetLength(0), i];
+                    chosenColumn = i;
+                }
+            }
+
+            for (int i = 0; i < matrix.GetLength(0); i++)
+            {
+                int? comp = matrix[i, matrix.GetLength(1)] / matrix[i, chosenColumn];
+
+                if (comp < chosenLine)
+                {
+                    chosenLine = comp;
+                }
+            }
+            return chosenLine;
+        }
+
+        public static int?[,] TwoPhasesResolve(int?[,] matrix)
+        {
+
         }
     }
 }

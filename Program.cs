@@ -17,17 +17,21 @@ namespace TrabalhoMarcia
 
             int?[,] restrictions = Operations.GetMatrixOfRestrictions(); // returns a matrix of all restriciton's values
 
-            int?[,] mergedMatrices = Operations.MergeMatrices(variables, restrictions);
+            int?[,] mergedMatrices = Operations.MergeMatrices(variables, restrictions); //return the matrices together 
 
-            int?[,] CompleteMatrix = Operations.FinalMatrix(mergedMatrices,Z);
+            int?[,] CompleteMatrix = Operations.FinalMatrix(mergedMatrices, Z); //puts te Z and result on the matrix 
 
-            for (int i = 0; i < CompleteMatrix.GetLength(0); i++)
+            Matrix.PrintMatrix(CompleteMatrix); //prints any matrices
+
+            bool isSimplex = Matrix.isSimplex(typeZ);
+
+            if (isSimplex)
             {
-                for (int j = 0; j < CompleteMatrix.GetLength(1); j++)
-                {
-                    Console.WriteLine($"{CompleteMatrix[i, j]}" + "\t");
-                }
-                Console.WriteLine("\n");
+                Matrix.SimplexResolve(CompleteMatrix);
+            }
+            else
+            {
+
             }
         }
     }
