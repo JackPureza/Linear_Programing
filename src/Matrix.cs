@@ -77,7 +77,7 @@ namespace TrabalhoMarcia.src
                         {
                             for (int j = 0; j < matrix.GetLength(1); j++)
                             {
-                                matrixAux[i, j] = (matrix[i, j] - matrix[i, chosenColumn]) * matrix[chosenLine, j] ?? default(int);
+                                matrixAux[i, j] = matrix[i, j] - (matrix[i, chosenColumn] * matrix[chosenLine, j]) ?? default(int);
                             }
                         }
                     }
@@ -130,8 +130,8 @@ namespace TrabalhoMarcia.src
 
         public static int GetChosenColumn(double?[,] matrix)
         {
-            double? comparator = matrix[matrix.GetLength(0) - 1, 1];
-            int chosenColumn = 0;
+            double? comparator = 999999;
+            int chosenColumn = -1;
 
             for (int i = 0; i < matrix.GetLength(1); i++)
             {
@@ -146,13 +146,15 @@ namespace TrabalhoMarcia.src
 
         public static bool VerifyLastLine(double?[,] matrix)
         {
+            bool verify = false;
+
             for (int i = 0; i < matrix.GetLength(1); i++)
             {
                 if (matrix[matrix.GetLength(0) - 1, i] < 0)
-                    return false;
-                return true;
+                    verify = true;
             }
-            return true;
+
+            return verify;
         }
     }
 }
