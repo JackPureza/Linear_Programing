@@ -23,9 +23,16 @@ namespace TrabalhoMarcia
 
             Matrix.PrintMatrix(CompleteMatrix); //prints any matrices
 
-            //bool isSimplex = Matrix.isSimplex(typeZ);
+            bool isSimplex = Matrix.isSimplex(typeZ);
 
-            Matrix.SimplexResolve(CompleteMatrix);
+            if (isSimplex)
+            {
+                Matrix.SimplexResolve(CompleteMatrix);
+            }
+            else
+            {
+                Matrix.TwoPhasesResolve(CompleteMatrix);
+            }
         }
     }
 }
