@@ -13,7 +13,7 @@ namespace TrabalhoMarcia.src
         public static int?[] linePosition = new int?[50];
         public static int[] columnPosition = new int[50];
         public static int artificialLineCount = 1;
-        public static int artificialColumnCount = 0;
+        public static int ColumnCount = 1;
         public static string GetTypeZ()
         {
             Console.WriteLine("Para Zmax, digite 1, para Zmin digite 2:");
@@ -275,7 +275,6 @@ namespace TrabalhoMarcia.src
 
         public static void SetLinePosition(int pos)
         {
-
             for (int i = 0; i < artificialLineCount; i++)
             {
                 if (linePosition[i] == null)
@@ -292,12 +291,12 @@ namespace TrabalhoMarcia.src
         public static void SetColumnPosition(int pos)
         {
             
-            for (int i = 0; i < artificialLineCount; i++)
+            for (int i = 0; i < ColumnCount; i++)
             {
                 if (columnPosition[i] == 0)
                     columnPosition[i] = pos + numberOfVariables;
             }
-            artificialLineCount++;
+            ColumnCount++;
         }
 
         public static int[] GetColumnPositions()

@@ -164,14 +164,10 @@ namespace TrabalhoMarcia.src
 
             for (int i = 0; i < matrix.GetLength(1) - 1; i++)
             {
-                for (int j = 0; j < artificialVariableLines.Length; j++)
+                for (int j = 0; j < matrix.GetLength(0) - 1; j++)
                 {
-                    for (int x = 0; x < matrix.GetLength(0) - 1; x++)
-                    {
-                        if (x == artificialVariableLines[j])
-                            zLinha[i] = zLinha[i] + matrix[x, i] ?? default(double);
-                    }
-
+                    if (j == artificialVariableLines[j])
+                        zLinha[i] = zLinha[i] + matrix[j, i] ?? default(double);
                 }
             }
 
