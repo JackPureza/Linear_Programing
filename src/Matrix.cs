@@ -160,14 +160,24 @@ namespace TrabalhoMarcia.src
         public static void TwoPhasesResolve(double?[,] matrix)
         {
             int?[] artificialVariableLines = Operations.GetLinePositions();
-            double?[] zLinha = new double?[50];
+            double[] zLinha = new double[50];
 
-            for (int i = 0; i < matrix.GetLength(1); i++)
+            for (int i = 0; i < matrix.GetLength(1) - 1; i++)
             {
                 for (int j = 0; j < artificialVariableLines.Length; j++)
                 {
-                    zLinha[i] += matrix[j,i];
+                    for (int x = 0; x < matrix.GetLength(0) - 1; x++)
+                    {
+                        if (x == artificialVariableLines[j])
+                            zLinha[i] = zLinha[i] + matrix[x, i] ?? default(double);
+                    }
+
                 }
+            }
+
+            for (int i = 0; i < zLinha.Length; i++)
+            {
+                zLinha[i] = zLinha[i] * -1;
             }
 
             int[] artificialVariableColumn = Operations.GetColumnPositions();
@@ -203,7 +213,7 @@ namespace TrabalhoMarcia.src
                 {
                     for (int x = 0; x < artificialVariableColumn.Length; x++)
                     {
-                        if(j != artificialVariableColumn[x])
+                        if (j != artificialVariableColumn[x])
                         {
                             simplexMatrix[i, j - artificialVariableColumn.Length] = resolvedMatrix[i, j];
                         }
