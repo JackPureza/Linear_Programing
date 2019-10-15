@@ -10,6 +10,10 @@ namespace TrabalhoMarcia.src
         public static int numberOfVariables = 0;
         public static int numberOfRestrictions = 0;
         public static int[] restrictionsSignal;
+        public static int?[] linePosition = new int?[50];
+        public static int[] columnPosition = new int[50];
+        public static int artificialLineCount = 1;
+        public static int artificialColumnCount = 1;
         public static string GetTypeZ()
         {
             Console.WriteLine("Para Zmax, digite 1, para Zmin digite 2:");
@@ -165,10 +169,14 @@ namespace TrabalhoMarcia.src
                                 {
                                     matrix[i, j] = 0;
                                     matrix[i, j + countBiggerThen] = double.Parse(restricao[i].Substring(0, restricao[i].IndexOf("a")));
+                                    SetColumnPosition(j+countBiggerThen);
+                                    SetLinePosition(i);
                                 }
                                 else
                                 {
                                     matrix[i, j] = double.Parse(restricao[i].Substring(0, restricao[i].IndexOf("a")));
+                                    SetColumnPosition(j);
+                                    SetLinePosition(i);
                                 }
                                 break;
                             case 3:
@@ -178,12 +186,16 @@ namespace TrabalhoMarcia.src
                                     matrix[i, j + countBiggerThen] = double.Parse(restricao[i].Substring(0, restricao[i].IndexOf("f")));
                                     restricao[i] = restricao[i].Remove(0, restricao[i].IndexOf("+"));
                                     matrix[i, j + countBiggerThen + 1] = double.Parse(restricao[i].Substring(0, restricao[i].IndexOf("a")));
+                                    SetColumnPosition(j + countBiggerThen+1);
+                                    SetLinePosition(i);
                                 }
                                 else
                                 {
                                     matrix[i, j] = double.Parse(restricao[i].Substring(0, restricao[i].IndexOf("f")));
                                     restricao[i] = restricao[i].Remove(0, restricao[i].IndexOf("+"));
                                     matrix[i, j + 1] = double.Parse(restricao[i].Substring(0, restricao[i].IndexOf("a")));
+                                    SetColumnPosition(j + 1);
+                                    SetLinePosition(i);
                                 }
                                 countBiggerThen++;
                                 break;
@@ -259,6 +271,38 @@ namespace TrabalhoMarcia.src
             }
 
             return results;
+        }
+
+        public static void SetLinePosition(int pos)
+        {
+
+            for (int i = 0; i < artificialLineCount; i++)
+            {
+                if (linePosition[i] == null)
+                    linePosition[i] = pos;
+            }
+            artificialLineCount++;
+        }
+
+        public static int?[] GetLinePositions()
+        {
+            return linePosition;
+        }
+
+        public static void SetColumnPosition(int pos)
+        {
+
+            for (int i = 0; i < artificialColumnCount; i++)
+            {
+                if (columnPosition[i] == null)
+                    columnPosition[i] = pos;
+            }
+            artificialColumnCount++;
+        }
+
+        public static int[] GetColumnPositions()
+        {
+            return columnPosition;
         }
     }
 }
