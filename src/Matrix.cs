@@ -109,7 +109,7 @@ namespace TrabalhoMarcia.src
             double? comp;
             for (int i = 0; i < matrix.GetLength(0) - 1; i++)
             {
-                if (matrix[i,chosenColumn] == 0)
+                if (matrix[i, chosenColumn] == 0)
                 {
                     comp = 999999999;
                 }
@@ -155,6 +155,64 @@ namespace TrabalhoMarcia.src
             }
 
             return verify;
+        }
+
+        public static void TwoPhasesResolve(double?[,] matrix)
+        {
+            int?[] artificialVariableLines = Operations.GetLinePositions();
+            double?[] zLinha = new double?[50];
+
+            for (int i = 0; i < matrix.GetLength(1); i++)
+            {
+                for (int j = 0; j < artificialVariableLines.Length; j++)
+                {
+                    zLinha[i] += matrix[j,i];
+                }
+            }
+
+            int[] artificialVariableColumn = Operations.GetColumnPositions();
+
+            for (int i = 0; i < artificialVariableColumn.Length; i++)
+            {
+                zLinha[artificialVariableColumn[i]] = 0;
+            }
+
+            double?[,] bigMatrix = new double?[matrix.GetLength(0) + 1, matrix.GetLength(1)];
+
+            for (int i = 0; i < matrix.GetLength(0); i++)
+            {
+                for (int j = 0; j < matrix.GetLength(1); j++)
+                {
+                    bigMatrix[i, j] = matrix[i, j];
+                }
+            }
+
+            for (int i = 0; i < matrix.GetLength(1); i++)
+            {
+                bigMatrix[bigMatrix.GetLength(0) - 1, i] = zLinha[i];
+            }
+
+            PrintMatrix(bigMatrix);
+            double?[,] resolvedMatrix = SimplexResolve(bigMatrix);
+
+            double?[,] simplexMatrix = new double?[resolvedMatrix.GetLength(0) - 1, resolvedMatrix.GetLength(1) - artificialVariableColumn.Length];
+
+            for (int i = 0; i < resolvedMatrix.GetLength(0); i++)
+            {
+                for (int j = 0; j < resolvedMatrix.GetLength(1); j++)
+                {
+                    for (int x = 0; x < artificialVariableColumn.Length; x++)
+                    {
+                        if(j != artificialVariableColumn[x])
+                        {
+                            simplexMatrix[i, j - artificialVariableColumn.Length] = resolvedMatrix[i, j];
+                        }
+                    }
+
+                }
+            }
+
+            SimplexResolve(simplexMatrix);
         }
     }
 }
