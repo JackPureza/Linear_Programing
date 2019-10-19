@@ -178,9 +178,10 @@ namespace TrabalhoMarcia.src
 
             int[] artificialVariableColumn = Operations.GetColumnPositions();
 
-            for (int i = 0; i < artificialVariableColumn.Length; i++)
+            for (int i = 0; i < matrix.GetLength(1); i++)
             {
-                zLinha[artificialVariableColumn[i]] = 0;
+                if(artificialVariableColumn[i] != 0)
+                    zLinha[artificialVariableColumn[i]] = 0;
             }
 
             double?[,] bigMatrix = new double?[matrix.GetLength(0) + 1, matrix.GetLength(1)];
@@ -201,20 +202,28 @@ namespace TrabalhoMarcia.src
             PrintMatrix(bigMatrix);
             double?[,] resolvedMatrix = SimplexResolve(bigMatrix);
 
-            double?[,] simplexMatrix = new double?[resolvedMatrix.GetLength(0) - 1, resolvedMatrix.GetLength(1) - artificialVariableColumn.Length];
+            double?[,] simplexMatrix = new double?[resolvedMatrix.GetLength(0) - 1, resolvedMatrix.GetLength(1) - (Operations.ColumnCount-1)];
 
-            for (int i = 0; i < resolvedMatrix.GetLength(0); i++)
+            for (int i = 0; i < simplexMatrix.GetLength(0); i++)
             {
+                int cont = 0;
                 for (int j = 0; j < resolvedMatrix.GetLength(1); j++)
                 {
-                    for (int x = 0; x < artificialVariableColumn.Length; x++)
+                    int test = 0;
+                    for (int x = 0; x < Operations.ColumnCount-1; x++)
                     {
                         if (j != artificialVariableColumn[x])
                         {
-                            simplexMatrix[i, j - artificialVariableColumn.Length] = resolvedMatrix[i, j];
+                            test++;
                         }
                     }
-
+                    if (test == (Operations.ColumnCount - 1))
+                    {
+                        simplexMatrix[i, j - cont] = resolvedMatrix[i, j];
+                    }
+                    else {
+                        cont++;
+                    }
                 }
             }
 
