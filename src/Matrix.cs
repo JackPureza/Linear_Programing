@@ -7,9 +7,9 @@ namespace TrabalhoMarcia.src
 {
     public class Matrix
     {
+        public static bool simplex = true;
         public static bool isSimplex(string typez)
         {
-            bool simplex = true;
             int[] restrictionsSignal = Operations.GetRestrictionsSignal();
 
             if (typez == "1")
@@ -77,7 +77,7 @@ namespace TrabalhoMarcia.src
                         {
                             for (int j = 0; j < matrix.GetLength(1); j++)
                             {
-                                matrixAux[i, j] = matrix[i, j] - (matrix[i, chosenColumn] * matrix[chosenLine, j]) ?? default(int);
+                                matrixAux[i, j] = matrix[i, j] - (matrix[i, chosenColumn] * matrixAux[chosenLine, j]) ?? default(int);
                             }
                         }
                     }
@@ -107,7 +107,15 @@ namespace TrabalhoMarcia.src
             int? line = null;
             double? chosenLine = 999999999;
             double? comp;
-            for (int i = 0; i < matrix.GetLength(0) - 1; i++)
+            int s = 1;
+
+            if(!simplex)
+            {
+                s = 2;
+            }
+
+
+            for (int i = 0; i < matrix.GetLength(0) - s; i++)
             {
                 if (matrix[i, chosenColumn] == 0)
                 {
@@ -138,7 +146,10 @@ namespace TrabalhoMarcia.src
                 if (matrix[matrix.GetLength(0) - 1, i] < comparator)
                 {
                     comparator = matrix[matrix.GetLength(0) - 1, i];
-                    chosenColumn = i;
+                    if(i != matrix.GetLength(1) - 1)
+                    {
+                        chosenColumn = i;
+                    }
                 }
             }
             return chosenColumn;
@@ -211,6 +222,7 @@ namespace TrabalhoMarcia.src
             PrintMatrix(bigMatrix);
             double?[,] resolvedMatrix = SimplexResolve(bigMatrix);
 
+            simplex = true;
             double?[,] simplexMatrix = new double?[resolvedMatrix.GetLength(0) - 1, resolvedMatrix.GetLength(1) - (Operations.ColumnCount-1)];
 
             for (int i = 0; i < simplexMatrix.GetLength(0); i++)
