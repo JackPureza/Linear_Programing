@@ -161,19 +161,28 @@ namespace TrabalhoMarcia.src
         {
             int?[] artificialVariableLines = Operations.GetLinePositions();
             double[] zLinha = new double[50];
+            int avl = 0;
 
-            for (int i = 0; i < matrix.GetLength(1) - 1; i++)
+            for (int i = 0; i < matrix.GetLength(1); i++)
             {
-                for (int j = 0; j < matrix.GetLength(0) - 1; j++)
+                while (artificialVariableLines[avl] != null)
                 {
-                    if (j == artificialVariableLines[j])
-                        zLinha[i] = zLinha[i] + matrix[j, i] ?? default(double);
+                    for (int j = 0; j < matrix.GetLength(0) - 1; j++)
+                    {
+                        if (j == artificialVariableLines[avl])
+                            zLinha[i] = zLinha[i] + matrix[j, i] ?? default(double);
+                    }
+                    avl++;
                 }
+                avl = 0;
             }
 
             for (int i = 0; i < zLinha.Length; i++)
             {
-                zLinha[i] = zLinha[i] * -1;
+                if (zLinha[i] != 0)
+                {
+                    zLinha[i] = zLinha[i] * -1;
+                }
             }
 
             int[] artificialVariableColumn = Operations.GetColumnPositions();

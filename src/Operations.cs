@@ -186,8 +186,7 @@ namespace TrabalhoMarcia.src
                                     matrix[i, j + countBiggerThen] = double.Parse(restricao[i].Substring(0, restricao[i].IndexOf("f")));
                                     restricao[i] = restricao[i].Remove(0, restricao[i].IndexOf("+"));
                                     matrix[i, j + countBiggerThen + 1] = double.Parse(restricao[i].Substring(0, restricao[i].IndexOf("a")));
-                                    SetColumnPosition(j + countBiggerThen);
-                                    SetColumnPosition(j + countBiggerThen+1);
+                                    SetColumnPosition(j + countBiggerThen + 1);
                                     SetLinePosition(i);
                                 }
                                 else
@@ -195,7 +194,6 @@ namespace TrabalhoMarcia.src
                                     matrix[i, j] = double.Parse(restricao[i].Substring(0, restricao[i].IndexOf("f")));
                                     restricao[i] = restricao[i].Remove(0, restricao[i].IndexOf("+"));
                                     matrix[i, j + 1] = double.Parse(restricao[i].Substring(0, restricao[i].IndexOf("a")));
-                                    SetColumnPosition(j);
                                     SetColumnPosition(j + 1);
                                     SetLinePosition(i);
                                 }
