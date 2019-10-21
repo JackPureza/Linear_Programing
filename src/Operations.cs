@@ -1,4 +1,11 @@
-﻿using System;
+﻿/*
+Alunos:
+        -Felipe Toshio A. Soares
+        -João Vitor P. Pureza
+        -Paulo Fernandes
+*/
+
+using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Text.RegularExpressions;

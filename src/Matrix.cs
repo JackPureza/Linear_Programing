@@ -1,4 +1,11 @@
-﻿using System;
+﻿/*
+Alunos:
+        -Felipe Toshio A. Soares
+        -João Vitor P. Pureza
+        -Paulo Fernandes
+*/
+
+using System;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
 using TrabalhoMarcia.src;
@@ -10,10 +17,13 @@ namespace TrabalhoMarcia.src
         public static int[] artificialVariableColumn = Operations.GetColumnPositions();
         public static int[] artificialAllVariableColumn = Operations.GetAllColumnPositions();
         public static bool simplex = true;
-        public static bool infinity = true;
+        public static bool infinity;
+        public static bool twoPhases = false;
+        public static int cycling;
 
         public static void isInfinity(double?[,] matrix, int chosenColumn)
         {
+            infinity = true;
             for (int i = 0; i < matrix.GetLength(0); i++)
             {
                 if (matrix[i,chosenColumn] > 0)
@@ -21,11 +31,6 @@ namespace TrabalhoMarcia.src
                     infinity = false;
                 }
             }
-        }
-
-        public static bool getInfinity()
-        {
-            return infinity;
         }
 
         public static bool isSimplex(string typez)
@@ -68,9 +73,11 @@ namespace TrabalhoMarcia.src
         public static double?[,] SimplexResolve(double?[,] matrix)
         {
             bool verification = true;
+            cycling = 0;
 
-            while (verification)
+            while (verification && cycling < 40)
             {
+                cycling++;
                 int chosenColumn = GetChosenColumn(matrix);
                 int? chosenL = ProductionProcess(matrix);
                 isInfinity(matrix, chosenColumn);
@@ -125,8 +132,8 @@ namespace TrabalhoMarcia.src
                 {
                     verification = false;
                 }
+                isInfinity(matrix, chosenColumn);
             }
-            Verify(matrix, artificialAllVariableColumn);
             return matrix;
         }
 
@@ -197,8 +204,9 @@ namespace TrabalhoMarcia.src
             return verify;
         }
 
-        public static void TwoPhasesResolve(double?[,] matrix)
+        public static double?[,] TwoPhasesResolve(double?[,] matrix)
         {
+            twoPhases = true;
             int?[] artificialVariableLines = Operations.GetLinePositions();
             double[] zLinha = new double[50];
             int avl = 0;
@@ -276,17 +284,49 @@ namespace TrabalhoMarcia.src
                 }
             }
 
+            double?[,] finalMatrix;
             if (!infinity)
             {
-                SimplexResolve(simplexMatrix);
+                finalMatrix = SimplexResolve(simplexMatrix);
             }
-            double? [,] ToResolveMatrix = SimplexResolve(simplexMatrix);
-            Verify(ToResolveMatrix, artificialVariableColumn);
+            else
+            {
+                finalMatrix = simplexMatrix;
+            }
+
+            return finalMatrix;
         }
 
-        public static void Verify(double?[,] matrix, int[] columns) 
+        public static void MatrixStatus(double?[,] matrix)
+        {
+            if (!infinity)
+            {
+                if (cycling < 40)
+                {
+                    Verify(matrix);
+                }
+                else
+                {
+                    Console.WriteLine("Matrix possui degenerescência.");
+                }
+            }else
+            {
+                Console.WriteLine("Matrix possui ótimo não finito.");
+            }
+        }
+
+        public static void Verify(double?[,] matrix) 
         {
             int c = 0;
+            int[] columns;
+            if (twoPhases)
+            {
+                columns = artificialVariableColumn;
+            }
+            else
+            {
+                columns = artificialAllVariableColumn;
+            }
             for (int i = 0; i < matrix.GetLength(1); i++)
             {
                 for (int x = 0; x < matrix.GetLength(1); x++)
@@ -308,7 +348,11 @@ namespace TrabalhoMarcia.src
             }
             if(c > 0)
             {
-                Console.WriteLine("Matrix possui múltiplas soluções otimas.");
+                Console.WriteLine("Matrix possui múltiplas soluções ótimas.");
+            }
+            else
+            {
+                Console.WriteLine("Matrix possui uma solução ótima.");
             }
         }
     }

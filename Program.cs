@@ -1,4 +1,11 @@
-﻿using System;
+﻿/*
+Alunos:
+        -Felipe Toshio A. Soares
+        -João Vitor P. Pureza
+        -Paulo Fernandes
+*/
+
+using System;
 using System.Collections.Generic;
 using TrabalhoMarcia.src;
 
@@ -27,12 +34,14 @@ namespace TrabalhoMarcia
 
             if (isSimplex)
             {
-                Matrix.SimplexResolve(CompleteMatrix);
+                CompleteMatrix = Matrix.SimplexResolve(CompleteMatrix);
             }
             else
             {
-                Matrix.TwoPhasesResolve(CompleteMatrix);
+                CompleteMatrix = Matrix.TwoPhasesResolve(CompleteMatrix);
             }
+
+            Matrix.MatrixStatus(CompleteMatrix);
         }
     }
 }
