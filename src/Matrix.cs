@@ -9,9 +9,9 @@ namespace TrabalhoMarcia.src
     {
         public static int[] artificialVariableColumn = Operations.GetColumnPositions();
         public static int[] artificialAllVariableColumn = Operations.GetAllColumnPositions();
+        public static bool simplex = true;
         public static bool isSimplex(string typez)
         {
-            bool simplex = true;
             int[] restrictionsSignal = Operations.GetRestrictionsSignal();
 
             if (typez == "1")
@@ -79,7 +79,7 @@ namespace TrabalhoMarcia.src
                         {
                             for (int j = 0; j < matrix.GetLength(1); j++)
                             {
-                                matrixAux[i, j] = matrix[i, j] - (matrix[i, chosenColumn] * matrix[chosenLine, j]) ?? default(int);
+                                matrixAux[i, j] = matrix[i, j] - (matrix[i, chosenColumn] * matrixAux[chosenLine, j]) ?? default(int);
                             }
                         }
                     }
@@ -110,7 +110,15 @@ namespace TrabalhoMarcia.src
             int? line = null;
             double? chosenLine = 999999999;
             double? comp;
-            for (int i = 0; i < matrix.GetLength(0) - 1; i++)
+            int s = 1;
+
+            if(!simplex)
+            {
+                s = 2;
+            }
+
+
+            for (int i = 0; i < matrix.GetLength(0) - s; i++)
             {
                 if (matrix[i, chosenColumn] == 0)
                 {
@@ -141,7 +149,10 @@ namespace TrabalhoMarcia.src
                 if (matrix[matrix.GetLength(0) - 1, i] < comparator)
                 {
                     comparator = matrix[matrix.GetLength(0) - 1, i];
-                    chosenColumn = i;
+                    if(i != matrix.GetLength(1) - 1)
+                    {
+                        chosenColumn = i;
+                    }
                 }
             }
             return chosenColumn;
@@ -212,7 +223,8 @@ namespace TrabalhoMarcia.src
             PrintMatrix(bigMatrix);
             double?[,] resolvedMatrix = SimplexResolve(bigMatrix);
 
-            double?[,] simplexMatrix = new double?[resolvedMatrix.GetLength(0) - 1, resolvedMatrix.GetLength(1) - (Operations.ColumnCount-1)];
+            simplex = true;
+            double?[,] simplexMatrix = new double?[resolvedMatrix.GetLength(0) - 1, resolvedMatrix.GetLength(1) - (Operations.ColumnCount - 1)];
 
             for (int i = 0; i < simplexMatrix.GetLength(0); i++)
             {
@@ -220,7 +232,7 @@ namespace TrabalhoMarcia.src
                 for (int j = 0; j < resolvedMatrix.GetLength(1); j++)
                 {
                     int test = 0;
-                    for (int x = 0; x < Operations.ColumnCount-1; x++)
+                    for (int x = 0; x < Operations.ColumnCount - 1; x++)
                     {
                         if (j != artificialVariableColumn[x])
                         {
@@ -231,7 +243,8 @@ namespace TrabalhoMarcia.src
                     {
                         simplexMatrix[i, j - cont] = resolvedMatrix[i, j];
                     }
-                    else {
+                    else
+                    {
                         cont++;
                     }
                 }
