@@ -109,7 +109,7 @@ namespace TrabalhoMarcia.src
             double? comp;
             int s = 1;
 
-            if (!simplex)
+            if(!simplex)
             {
                 s = 2;
             }
@@ -146,7 +146,7 @@ namespace TrabalhoMarcia.src
                 if (matrix[matrix.GetLength(0) - 1, i] < comparator)
                 {
                     comparator = matrix[matrix.GetLength(0) - 1, i];
-                    if (i != matrix.GetLength(1) - 1)
+                    if(i != matrix.GetLength(1) - 1)
                     {
                         chosenColumn = i;
                     }
@@ -200,7 +200,7 @@ namespace TrabalhoMarcia.src
 
             for (int i = 0; i < matrix.GetLength(1); i++)
             {
-                if (artificialVariableColumn[i] != 0)
+                if(artificialVariableColumn[i] != 0)
                     zLinha[artificialVariableColumn[i]] = 0;
             }
 
