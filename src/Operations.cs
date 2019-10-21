@@ -290,7 +290,6 @@ namespace TrabalhoMarcia.src
 
         public static void SetColumnPosition(int pos)
         {
-
             for (int i = 0; i < ColumnCount; i++)
             {
                 if (columnPosition[i] == 0)
