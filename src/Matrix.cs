@@ -8,6 +8,24 @@ namespace TrabalhoMarcia.src
     public class Matrix
     {
         public static bool simplex = true;
+        public static bool infinity = true;
+
+        public static void isInfinity(double?[,] matrix, int chosenColumn)
+        {
+            for (int i = 0; i < matrix.GetLength(0); i++)
+            {
+                if (matrix[i,chosenColumn] > 0)
+                {
+                    infinity = false;
+                }
+            }
+        }
+
+        public static bool getInfinity()
+        {
+            return infinity;
+        }
+
         public static bool isSimplex(string typez)
         {
             int[] restrictionsSignal = Operations.GetRestrictionsSignal();
@@ -53,45 +71,53 @@ namespace TrabalhoMarcia.src
             {
                 int chosenColumn = GetChosenColumn(matrix);
                 int? chosenL = ProductionProcess(matrix);
-                if (chosenL != null)
+                isInfinity(matrix, chosenColumn);
+                if (!infinity)
                 {
-                    int chosenLine = Convert.ToInt32(chosenL);
-                    double[,] matrixAux = new double[matrix.GetLength(0), matrix.GetLength(1)];
-
-
-                    double pivo = matrix[chosenLine, chosenColumn] / matrix[chosenLine, chosenColumn] ?? default(int);
-
-                    matrixAux[chosenLine, chosenColumn] = pivo;
-
-                    for (int i = 0; i < matrix.GetLength(1); i++)
+                    if (chosenL != null)
                     {
-                        if (i != chosenColumn)
+                        int chosenLine = Convert.ToInt32(chosenL);
+                        double[,] matrixAux = new double[matrix.GetLength(0), matrix.GetLength(1)];
+
+
+                        double pivo = matrix[chosenLine, chosenColumn] / matrix[chosenLine, chosenColumn] ?? default(int);
+
+                        matrixAux[chosenLine, chosenColumn] = pivo;
+
+                        for (int i = 0; i < matrix.GetLength(1); i++)
                         {
-                            matrixAux[chosenLine, i] = matrix[chosenLine, i] / matrix[chosenLine, chosenColumn] ?? default(int);
+                            if (i != chosenColumn)
+                            {
+                                matrixAux[chosenLine, i] = matrix[chosenLine, i] / matrix[chosenLine, chosenColumn] ?? default(int);
+                            }
                         }
-                    }
 
-                    for (int i = 0; i < matrix.GetLength(0); i++)
-                    {
-                        if (i != chosenLine)
+                        for (int i = 0; i < matrix.GetLength(0); i++)
+                        {
+                            if (i != chosenLine)
+                            {
+                                for (int j = 0; j < matrix.GetLength(1); j++)
+                                {
+                                    matrixAux[i, j] = matrix[i, j] - (matrix[i, chosenColumn] * matrixAux[chosenLine, j]) ?? default(int);
+                                }
+                            }
+                        }
+
+                        for (int i = 0; i < matrix.GetLength(0); i++)
                         {
                             for (int j = 0; j < matrix.GetLength(1); j++)
                             {
-                                matrixAux[i, j] = matrix[i, j] - (matrix[i, chosenColumn] * matrixAux[chosenLine, j]) ?? default(int);
+                                matrix[i, j] = matrixAux[i, j];
                             }
-                        }
-                    }
 
-                    for (int i = 0; i < matrix.GetLength(0); i++)
+                        }
+                        PrintMatrix(matrix);
+                        verification = VerifyLastLine(matrix);
+                    }
+                    else
                     {
-                        for (int j = 0; j < matrix.GetLength(1); j++)
-                        {
-                            matrix[i, j] = matrixAux[i, j];
-                        }
-
+                        verification = false;
                     }
-                    PrintMatrix(matrix);
-                    verification = VerifyLastLine(matrix);
                 }
                 else
                 {
@@ -249,7 +275,10 @@ namespace TrabalhoMarcia.src
                 }
             }
 
-            SimplexResolve(simplexMatrix);
+            if (!infinity)
+            {
+                SimplexResolve(simplexMatrix);
+            }
         }
     }
 }
