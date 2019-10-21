@@ -169,7 +169,7 @@ namespace TrabalhoMarcia.src
                                 {
                                     matrix[i, j] = 0;
                                     matrix[i, j + countBiggerThen] = double.Parse(restricao[i].Substring(0, restricao[i].IndexOf("a")));
-                                    SetColumnPosition(j+countBiggerThen);
+                                    SetColumnPosition(j + countBiggerThen);
                                     SetLinePosition(i);
                                 }
                                 else
@@ -290,7 +290,6 @@ namespace TrabalhoMarcia.src
 
         public static void SetColumnPosition(int pos)
         {
-            
             for (int i = 0; i < ColumnCount; i++)
             {
                 if (columnPosition[i] == 0)

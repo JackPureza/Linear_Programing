@@ -223,7 +223,7 @@ namespace TrabalhoMarcia.src
             double?[,] resolvedMatrix = SimplexResolve(bigMatrix);
 
             simplex = true;
-            double?[,] simplexMatrix = new double?[resolvedMatrix.GetLength(0) - 1, resolvedMatrix.GetLength(1) - (Operations.ColumnCount-1)];
+            double?[,] simplexMatrix = new double?[resolvedMatrix.GetLength(0) - 1, resolvedMatrix.GetLength(1) - (Operations.ColumnCount - 1)];
 
             for (int i = 0; i < simplexMatrix.GetLength(0); i++)
             {
@@ -231,7 +231,7 @@ namespace TrabalhoMarcia.src
                 for (int j = 0; j < resolvedMatrix.GetLength(1); j++)
                 {
                     int test = 0;
-                    for (int x = 0; x < Operations.ColumnCount-1; x++)
+                    for (int x = 0; x < Operations.ColumnCount - 1; x++)
                     {
                         if (j != artificialVariableColumn[x])
                         {
@@ -242,7 +242,8 @@ namespace TrabalhoMarcia.src
                     {
                         simplexMatrix[i, j - cont] = resolvedMatrix[i, j];
                     }
-                    else {
+                    else
+                    {
                         cont++;
                     }
                 }
