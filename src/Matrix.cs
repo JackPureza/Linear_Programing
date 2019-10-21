@@ -7,6 +7,8 @@ namespace TrabalhoMarcia.src
 {
     public class Matrix
     {
+        public static int[] artificialVariableColumn = Operations.GetColumnPositions();
+        public static int[] artificialAllVariableColumn = Operations.GetAllColumnPositions();
         public static bool simplex = true;
         public static bool infinity = true;
 
@@ -124,6 +126,7 @@ namespace TrabalhoMarcia.src
                     verification = false;
                 }
             }
+            Verify(matrix, artificialAllVariableColumn);
             return matrix;
         }
 
@@ -222,8 +225,6 @@ namespace TrabalhoMarcia.src
                 }
             }
 
-            int[] artificialVariableColumn = Operations.GetColumnPositions();
-
             for (int i = 0; i < matrix.GetLength(1); i++)
             {
                 if(artificialVariableColumn[i] != 0)
@@ -278,6 +279,36 @@ namespace TrabalhoMarcia.src
             if (!infinity)
             {
                 SimplexResolve(simplexMatrix);
+            }
+            double? [,] ToResolveMatrix = SimplexResolve(simplexMatrix);
+            Verify(ToResolveMatrix, artificialVariableColumn);
+        }
+
+        public static void Verify(double?[,] matrix, int[] columns) 
+        {
+            int c = 0;
+            for (int i = 0; i < matrix.GetLength(1); i++)
+            {
+                for (int x = 0; x < matrix.GetLength(1); x++)
+                {
+                    if (i == columns[x])
+                    {
+                        if (matrix[matrix.GetLength(0) - 1, i] == 0)
+                        {
+                            for (int j = 0; j < matrix.GetLength(0); j++)
+                            {
+                                if (matrix[j, i] > 0)
+                                {
+                                    c++;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            if(c > 0)
+            {
+                Console.WriteLine("Matrix possui múltiplas soluções otimas.");
             }
         }
     }
